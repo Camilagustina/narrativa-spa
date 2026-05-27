@@ -1272,6 +1272,142 @@ textarea.form-input {
   }
 }
 
+@media (max-width: 480px) {
+  .header {
+    height: auto;
+    padding: 16px 0;
+  }
+  .header .container {
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 16px;
+  }
+  .logo {
+    font-size: 22px;
+  }
+  .nav {
+    gap: 16px;
+    width: 100%;
+    justify-content: center;
+  }
+  .nav-link {
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    padding: 2px 0;
+  }
+  .page-container {
+    margin-top: calc(var(--header-height) + 70px);
+    margin-bottom: calc(var(--player-height) + 160px);
+    padding: 0 16px;
+  }
+  .hero {
+    padding: 24px 0 32px 0;
+  }
+  .hero-title {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+  .hero-desc {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  .stories-grid {
+    gap: 20px;
+  }
+  .story-card-content {
+    padding: 20px;
+  }
+  .story-card-title {
+    font-size: 19px;
+  }
+  .story-card-synopsis {
+    margin-bottom: 16px;
+  }
+  .text-row {
+    padding: 16px 0;
+  }
+  .text-row-main h3 {
+    font-size: 20px;
+  }
+  .text-row-desc {
+    font-size: 14px;
+  }
+  .text-row-meta {
+    flex-wrap: wrap;
+    gap: 10px 14px;
+  }
+  .reader-header {
+    margin-bottom: 30px;
+  }
+  .reader-title {
+    font-size: 30px;
+  }
+  .reader-toolbar {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+    padding: 12px 0;
+  }
+  .reader-listen-trigger {
+    width: 100%;
+    justify-content: center;
+  }
+  .reader-controls-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .book-body-wrapper {
+    padding: 24px 16px;
+    border-radius: 16px;
+  }
+  .book-body p {
+    text-align: left;
+    margin-bottom: 16px;
+  }
+  .book-body blockquote {
+    margin: 24px 0;
+    padding-left: 16px;
+  }
+  .admin-card {
+    padding: 24px 16px;
+    border-radius: 16px;
+  }
+  .admin-tabs-nav {
+    margin-bottom: 24px;
+  }
+  .admin-tab-btn {
+    padding: 8px 12px;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+  .floating-player {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    padding: 12px;
+    gap: 10px;
+  }
+  .player-cover-wrapper {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+  }
+  .player-title {
+    font-size: 15px;
+  }
+  .player-controls {
+    gap: 16px;
+    margin-bottom: 4px;
+  }
+  .player-btn-play {
+    width: 36px;
+    height: 36px;
+  }
+  .slider-container {
+    height: 16px;
+  }
+}
+
 /* 14. UPLOAD LOADING OVERLAY */
 .loading-overlay {
   position: fixed;
