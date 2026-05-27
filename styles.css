@@ -1333,3 +1333,313 @@ textarea.form-input {
   color: var(--text-muted);
   line-height: 1.5;
 }
+
+/* 15. ADMIN SUB-TABS & RECYCLE BIN */
+.admin-tabs-nav {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--border-gold);
+  padding-bottom: 2px;
+}
+
+.admin-tab-btn {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  padding: 12px 24px;
+  border-bottom: 2px solid transparent;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+}
+
+.admin-tab-btn:hover {
+  color: var(--text-charcoal);
+}
+
+.admin-tab-btn.active {
+  color: var(--text-charcoal);
+  border-bottom-color: var(--text-charcoal);
+}
+
+.trash-badge {
+  font-size: 10px;
+  background: var(--accent-gold-dark);
+  color: var(--bg-pure-white);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.admin-panel {
+  display: none;
+}
+
+.admin-panel.active {
+  display: block;
+  animation: pageFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Card & List Delete Buttons */
+.card-delete-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: #c62828;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--shadow-subtle);
+  opacity: 0;
+  transform: scale(0.9);
+  transition: var(--transition-smooth);
+  z-index: 10;
+}
+
+.story-card:hover .card-delete-btn {
+  opacity: 0.85;
+  transform: scale(1);
+}
+
+.card-delete-btn:hover {
+  opacity: 1 !important;
+  background: #ffebee;
+  transform: scale(1.08);
+}
+
+.text-row-delete-btn {
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-fast);
+  padding: 4px;
+  background: transparent;
+}
+
+.text-row-delete-btn:hover {
+  color: #c62828;
+  transform: scale(1.1);
+}
+
+/* Custom Confirmation Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(42, 42, 42, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 3000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: var(--transition-smooth);
+}
+
+.modal-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-card {
+  background: var(--bg-pure-white);
+  border: 1px solid var(--border-gold);
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 440px;
+  width: 90%;
+  box-shadow: var(--shadow-floating);
+  text-align: center;
+  transform: translateY(20px);
+  transition: var(--transition-smooth);
+}
+
+.modal-overlay.active .modal-card {
+  transform: translateY(0);
+}
+
+.modal-title {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--text-charcoal);
+  margin-bottom: 12px;
+}
+
+.modal-message {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.modal-btn {
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: var(--transition-smooth);
+  flex-grow: 1;
+}
+
+.modal-btn-cancel {
+  background: var(--accent-gold-light);
+  color: var(--text-charcoal);
+  border: 1px solid var(--border-gold);
+}
+
+.modal-btn-cancel:hover {
+  background: var(--accent-gold);
+}
+
+.modal-btn-confirm {
+  background: #c62828;
+  color: var(--bg-pure-white);
+  box-shadow: var(--shadow-subtle);
+}
+
+.modal-btn-confirm:hover {
+  background: #b71c1c;
+  box-shadow: var(--shadow-medium);
+}
+
+/* Recycle Bin List */
+.trash-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.trash-item-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 180px 180px;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid var(--border-gold);
+  border-radius: 16px;
+  background: var(--bg-alabaster);
+  gap: 20px;
+  transition: var(--transition-smooth);
+}
+
+.trash-item-row:hover {
+  box-shadow: var(--shadow-subtle);
+  border-color: var(--accent-gold);
+}
+
+.trash-item-cover {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid var(--border-gold);
+}
+
+.trash-item-info h4 {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.trash-item-info p {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.trash-item-days {
+  font-size: 13px;
+  font-weight: 600;
+  color: #c62828;
+}
+
+.trash-item-days.safe {
+  color: var(--accent-gold-dark);
+}
+
+.trash-item-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.trash-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.trash-btn-restore {
+  background: var(--bg-pure-white);
+  color: var(--text-charcoal);
+  border: 1px solid var(--border-gold);
+}
+
+.trash-btn-restore:hover {
+  background: var(--accent-gold-light);
+  border-color: var(--accent-gold);
+}
+
+.trash-btn-purge {
+  background: transparent;
+  color: #c62828;
+  border: 1px solid rgba(198, 40, 40, 0.2);
+}
+
+.trash-btn-purge:hover {
+  background: #ffebee;
+  border-color: #c62828;
+}
+
+.trash-empty-state {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--text-muted);
+  font-size: 15px;
+  font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .trash-item-row {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 12px;
+    padding: 24px;
+  }
+  .trash-item-cover {
+    margin: 0 auto;
+  }
+  .trash-item-actions {
+    justify-content: center;
+  }
+}
