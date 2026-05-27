@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Narrativa | Quiet Luxury Storytelling & Blog</title>
+  <meta name="description" content="Una experiencia inmersiva de cuentos sonoros y lecturas premium. Escucha historias relatadas con calidez y lee textos en una interfaz minimalista.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- 1. HEADER (NAVBAR) -->
+  <header class="header" id="main-header">
+    <div class="container">
+      <a href="#" class="logo" id="logo-link">
+        Narrativa<span class="logo-dot"></span>
+      </a>
+      <nav class="nav">
+        <button class="nav-link active" id="nav-stories" data-target="page-stories">Cuentos</button>
+        <button class="nav-link" id="nav-texts" data-target="page-texts">Escrituras</button>
+        <button class="nav-link" id="nav-admin" data-target="page-admin">Administrar</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 2. MAIN PAGES CONTAINER -->
+  <main class="page-container container">
+
+    <!-- PAGE 1: SOUND STORIES -->
+    <section class="page active" id="page-stories">
+      <div class="hero float-element">
+        <h5 class="hero-subtitle">La voz de la materia</h5>
+        <h1 class="hero-title">Historias que flotan en el <span>silencio</span></h1>
+        <p class="hero-desc">Bienvenido a una colección de relatos sonoros creados para desacelerar el pulso. Cuentos narrados para ser escuchados en la quietud de la tarde.</p>
+        <div class="hero-divider"></div>
+      </div>
+
+      <div class="section-title-wrapper">
+        <h2 class="section-title">Cuentos Sonoros</h2>
+        <span class="section-subtitle" id="stories-count">3 relatos disponibles</span>
+      </div>
+
+      <div class="stories-grid" id="stories-grid-container">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- PAGE 2: WRITTEN STORIES (BLOG) -->
+    <section class="page" id="page-texts">
+      <div class="hero">
+        <h5 class="hero-subtitle">El espacio de la palabra</h5>
+        <h1 class="hero-title">Escritos para ser <span>saboreados</span></h1>
+        <p class="hero-desc">Una biblioteca digital diseñada bajo los principios del libro físico. Espacio en blanco, tipografía cuidada y margen para respirar.</p>
+        <div class="hero-divider"></div>
+      </div>
+
+      <!-- TEXT ROWS INDEX -->
+      <div id="texts-list-wrapper">
+        <div class="section-title-wrapper">
+          <h2 class="section-title">El Cuaderno de Notas</h2>
+          <span class="section-subtitle" id="texts-count">3 escritos publicados</span>
+        </div>
+        <div class="texts-list" id="texts-list-container">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- IMMERSIVE BOOK READER VIEW -->
+      <div class="immersive-reader" id="book-reader-view">
+        <div class="reader-header">
+          <button class="back-to-texts-btn" id="close-reader-btn">
+            <i data-lucide="arrow-left"></i> Volver a los escritos
+          </button>
+          <span class="reader-genre" id="reader-genre-display">Fantasía</span>
+          <h2 class="reader-title" id="reader-title-display">Título del Cuento</h2>
+          <div class="reader-meta">
+            <span>Escrito por <strong id="reader-author-display">Lucas Escribano</strong></span>
+            <span>&bull;</span>
+            <span id="reader-time-display">6 min de lectura</span>
+          </div>
+        </div>
+
+        <div class="reader-toolbar">
+          <button class="reader-listen-trigger" id="reader-audio-trigger-btn">
+            <i data-lucide="play" id="reader-audio-icon"></i> Escuchar Cuento
+          </button>
+          <div class="reader-controls-right">
+            <div class="font-size-adjusters">
+              <button class="font-size-btn" data-size="sm" title="Letra Pequeña">A</button>
+              <button class="font-size-btn active" data-size="md" title="Letra Mediana">A</button>
+              <button class="font-size-btn" data-size="lg" title="Letra Grande">A</button>
+            </div>
+            <button class="theme-toggle-btn" id="reader-theme-toggle" title="Cambiar Tema (Claro/Oscuro)">
+              <i data-lucide="moon" id="reader-theme-icon"></i>
+            </button>
+          </div>
+        </div>
+
+        <article class="book-body-wrapper size-md" id="book-text-wrapper">
+          <div class="book-body" id="book-body-content">
+            <!-- Rendered via JS -->
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- PAGE 3: ADMIN UPLOAD -->
+    <section class="page" id="page-admin">
+      <div class="hero">
+        <h5 class="hero-subtitle">Mesa del Narrador</h5>
+        <h1 class="hero-title">Publicar nueva <span>obra</span></h1>
+        <p class="hero-desc">Añade pistas sonoras y cuentos escritos al catálogo del artista. Sube el archivo y redacta la versión de lectura inmersiva.</p>
+        <div class="hero-divider"></div>
+      </div>
+
+      <div class="admin-card">
+        <form id="upload-story-form" onsubmit="return false;">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="input-title">Título del Cuento</label>
+              <input type="text" id="input-title" class="form-input" placeholder="Ej. El susurro de las olas" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="input-narrator">Narrador / Autor</label>
+              <input type="text" id="input-narrator" class="form-input" placeholder="Ej. Lucas Escribano" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="input-genre">Género / Categoría</label>
+              <input type="text" id="input-genre" class="form-input" placeholder="Ej. Poético / Meditación" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="select-cover">Imagen de Portada (Simulada)</label>
+              <select id="select-cover" class="form-input">
+                <option value="assets/cover_forest.png">Ecos en el Bosque (Verde Musgo)</option>
+                <option value="assets/cover_wind.png">Viento de Arena (Tono Arena)</option>
+                <option value="assets/cover_sea.png">Mar Estrellado (Azul Oscuro)</option>
+              </select>
+            </div>
+            
+            <div class="form-group-full">
+              <label class="form-label">Archivo de Audio (.mp3 o .wav)</label>
+              <div class="drag-drop-zone" id="audio-drag-zone">
+                <div class="drag-drop-icon">
+                  <i data-lucide="cloud-upload" style="width: 48px; height: 48px; stroke-width: 1.2;"></i>
+                </div>
+                <div class="drag-drop-text">Arrastra y suelta tu archivo de audio aquí</div>
+                <div class="drag-drop-sub">o haz clic para explorar tus carpetas</div>
+                <div style="font-size: 11px; margin-top: 6px; color: var(--accent-gold-dark);">Tamaño máximo recomendado: 3.5 MB (MP3 comprimido)</div>
+                <input type="file" id="audio-file-input" class="drag-drop-input" accept="audio/mp3, audio/wav">
+                
+                <div class="file-indicator" id="uploaded-file-indicator">
+                  <i data-lucide="check-circle-2"></i>
+                  <span id="uploaded-file-name">archivo.mp3 cargado</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group-full">
+              <label class="form-label" for="input-synopsis">Sinopsis del Cuento</label>
+              <input type="text" id="input-synopsis" class="form-input" placeholder="Breve descripción introductoria para la tarjeta del catálogo..." required>
+            </div>
+
+            <div class="form-group-full">
+              <label class="form-label" for="input-text">Texto Completo del Cuento (HTML permitido)</label>
+              <textarea id="input-text" class="form-input" placeholder="Escribe aquí el texto del cuento. Usa párrafos ordinarios y puedes aplicar clases especiales como 'drop-cap' en el primer párrafo para la letra capitular..." required></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn" id="form-submit-btn">
+            <i data-lucide="check"></i> Publicar Relato
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 3. CUSTOM FLOATING AUDIO PLAYER -->
+  <div class="player-wrapper">
+    <div class="floating-player" id="global-player">
+      
+      <!-- Player Left: Metadata -->
+      <div class="player-left">
+        <div class="player-cover-wrapper">
+          <img src="assets/cover_forest.png" alt="Cover" class="player-cover" id="player-track-cover">
+        </div>
+        <div class="player-info">
+          <div class="player-title" id="player-track-title">Ecos en el Bosque Silente</div>
+          <div class="player-narrator" id="player-track-narrator">Lucas Escribano</div>
+        </div>
+      </div>
+
+      <!-- Player Center: Controls & Timeline -->
+      <div class="player-center">
+        <div class="player-controls">
+          <button class="player-btn" id="player-btn-backward" title="Retroceder 10s">
+            <i data-lucide="rotate-ccw"></i>
+          </button>
+          <button class="player-btn player-btn-play" id="player-btn-toggle" title="Reproducir / Pausar">
+            <i data-lucide="play" id="player-play-icon" style="fill: currentColor;"></i>
+          </button>
+          <button class="player-btn" id="player-btn-forward" title="Adelantar 10s">
+            <i data-lucide="rotate-cw"></i>
+          </button>
+        </div>
+        
+        <div class="player-timeline-row">
+          <span class="player-time" id="player-time-current">0:00</span>
+          
+          <div class="slider-container" id="player-progress-container">
+            <div class="slider-track-bg">
+              <div class="slider-track-fill" id="player-progress-fill"></div>
+              <div class="slider-handle" id="player-progress-handle"></div>
+            </div>
+          </div>
+          
+          <span class="player-time" id="player-time-total">0:00</span>
+        </div>
+      </div>
+
+      <!-- Player Right: Volume & Wave -->
+      <div class="player-right">
+        <div class="player-volume-wrapper">
+          <button class="player-btn" id="player-btn-mute" title="Silenciar">
+            <i data-lucide="volume-2" id="player-volume-icon"></i>
+          </button>
+          <div class="volume-slider-container" id="player-volume-container">
+            <div class="volume-slider-track">
+              <div class="volume-slider-fill" id="player-volume-fill"></div>
+              <div class="volume-slider-handle" id="player-volume-handle"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="visualizer-container">
+          <canvas id="visualizer-canvas"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 4. NOTIFICATION TOAST -->
+  <div class="toast" id="toast-notification">
+    <i data-lucide="check-circle" class="toast-icon"></i>
+    <span id="toast-message">Cuento publicado con éxito</span>
+  </div>
+
+  <!-- 5. UPLOAD LOADING OVERLAY -->
+  <div class="loading-overlay" id="upload-loading-overlay">
+    <div class="loading-card">
+      <div class="loading-spinner"></div>
+      <h3 class="loading-title">Publicando Relato</h3>
+      <p class="loading-msg" id="upload-loading-msg">Subiendo pista de audio a GitHub y actualizando biblioteca...</p>
+    </div>
+  </div>
+
+  <!-- 6. HIDDEN NATIVE AUDIO ELEMENT -->
+  <audio id="global-audio-element" preload="auto"></audio>
+
+  <!-- 6. APPLICATION SCRIPTS -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="src/data.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>
