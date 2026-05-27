@@ -29,9 +29,10 @@
     <!-- PAGE 1: SOUND STORIES -->
     <section class="page active" id="page-stories">
       <div class="hero float-element">
-        <h5 class="hero-subtitle">La voz de la materia</h5>
-        <h1 class="hero-title">Historias que flotan en el <span>silencio</span></h1>
-        <p class="hero-desc">Bienvenido a una colección de relatos sonoros creados para desacelerar el pulso. Cuentos narrados para ser escuchados en la quietud de la tarde.</p>
+        <h5 class="hero-subtitle">Lengua y Literatura</h5>
+        <h1 class="hero-title">Relatos: La torre de cubo</h1>
+        <h5 style="font-family: var(--font-serif); font-size: 20px; font-weight: 400; color: var(--text-muted); margin-bottom: 24px;">por Laura Devetach</h5>
+        <p class="hero-desc">Bienvenido a una colección de relatos sonoros y escritos de Lengua y Literatura, creados para desacelerar el pulso. Cuentos narrados para ser escuchados en la quietud de la tarde.</p>
         <div class="hero-divider"></div>
       </div>
 
@@ -104,17 +105,27 @@
       </div>
     </section>
 
-    <!-- PAGE 3: ADMIN UPLOAD -->
+    <!-- PAGE 3: ADMIN UPLOAD & TRASH -->
     <section class="page" id="page-admin">
       <div class="hero">
         <h5 class="hero-subtitle">Mesa del Narrador</h5>
-        <h1 class="hero-title">Publicar nueva <span>obra</span></h1>
-        <p class="hero-desc">Añade pistas sonoras y cuentos escritos al catálogo del artista. Sube el archivo y redacta la versión de lectura inmersiva.</p>
+        <h1 class="hero-title">Gestión de <span>Obras</span></h1>
+        <p class="hero-desc">Añade pistas sonoras y cuentos escritos al catálogo, o gestiona las publicaciones que se encuentran en la papelera temporal.</p>
         <div class="hero-divider"></div>
       </div>
 
-      <div class="admin-card">
-        <form id="upload-story-form" onsubmit="return false;">
+      <!-- Admin Subnavigation Tabs -->
+      <div class="admin-tabs-nav">
+        <button class="admin-tab-btn active" id="tab-btn-upload">Publicar Obra</button>
+        <button class="admin-tab-btn" id="tab-btn-trash">
+          Papelera <span class="trash-badge" id="trash-badge-count">0</span>
+        </button>
+      </div>
+
+      <!-- PANEL 1: UPLOAD FORM -->
+      <div class="admin-panel active" id="panel-upload">
+        <div class="admin-card">
+          <form id="upload-story-form" onsubmit="return false;">
           <div class="form-grid">
             <div class="form-group">
               <label class="form-label" for="input-title">Título del Cuento</label>
@@ -169,7 +180,21 @@
           <button type="submit" class="submit-btn" id="form-submit-btn">
             <i data-lucide="check"></i> Publicar Relato
           </button>
-        </form>
+          </form>
+        </div>
+      </div>
+
+      <!-- PANEL 2: RECYCLE BIN -->
+      <div class="admin-panel" id="panel-trash">
+        <div class="admin-card">
+          <div class="trash-header">
+            <h2 class="section-title">Papelera de Reciclaje</h2>
+            <p class="admin-desc">Los relatos borrados se conservan en esta papelera por un máximo de <strong>15 días</strong> desde su eliminación antes de ser purgados de forma permanente de GitHub y del catálogo.</p>
+          </div>
+          <div class="trash-list" id="trash-list-container">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
       </div>
     </section>
 
@@ -252,6 +277,18 @@
       <div class="loading-spinner"></div>
       <h3 class="loading-title">Publicando Relato</h3>
       <p class="loading-msg" id="upload-loading-msg">Subiendo pista de audio a GitHub y actualizando biblioteca...</p>
+    </div>
+  </div>
+
+  <!-- CUSTOM CONFIRMATION MODAL -->
+  <div class="modal-overlay" id="confirm-modal">
+    <div class="modal-card">
+      <h3 class="modal-title" id="confirm-modal-title">¿Eliminar relato?</h3>
+      <p class="modal-message" id="confirm-modal-message">Esta acción moverá el relato a la papelera, donde se conservará por 15 días.</p>
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-cancel" id="confirm-modal-cancel">Cancelar</button>
+        <button class="modal-btn modal-btn-confirm" id="confirm-modal-confirm">Confirmar</button>
+      </div>
     </div>
   </div>
 
