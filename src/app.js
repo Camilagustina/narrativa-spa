@@ -177,14 +177,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const countDisplay = document.getElementById("stories-count");
     grid.innerHTML = "";
 
-    countDisplay.textContent = `${stories.length} ${stories.length === 1 ? 'relato disponible' : 'relatos disponibles'}`;
+    const activeStories = stories.filter(s => !s.deleted);
+    countDisplay.textContent = `${activeStories.length} ${activeStories.length === 1 ? 'relato disponible' : 'relatos disponibles'}`;
 
-    stories.forEach(story => {
+    activeStories.forEach(story => {
       const card = document.createElement("div");
       card.className = "story-card";
       card.innerHTML = `
         <div class="story-card-image-wrapper">
           <img src="${story.cover}" alt="${story.title}" class="story-card-image">
+          <button class="card-delete-btn" data-id="${story.id}" title="Eliminar cuento">
+            <i data-lucide="trash-2" style="width: 16px; height: 16px; stroke-width: 2;"></i>
+          </button>
           <div class="story-card-overlay">
             <button class="card-play-btn" data-id="${story.id}" title="Reproducir cuento">
               <i data-lucide="play" style="fill: currentColor; width: 24px; height: 24px;"></i>
@@ -215,6 +219,10 @@ document.addEventListener("DOMContentLoaded", () => {
       card.querySelector(".story-card-title").addEventListener("click", () => {
         loadAndPlayTrack(story);
       });
+      card.querySelector(".card-delete-btn").addEventListener("click", (e) => {
+        e.stopPropagation();
+        triggerDelete(story);
+      });
 
       grid.appendChild(card);
     });
@@ -228,9 +236,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const countDisplay = document.getElementById("texts-count");
     container.innerHTML = "";
 
-    countDisplay.textContent = `${stories.length} ${stories.length === 1 ? 'escrito publicado' : 'escritos publicados'}`;
+    const activeStories = stories.filter(s => !s.deleted);
+    countDisplay.textContent = `${activeStories.length} ${activeStories.length === 1 ? 'escrito publicado' : 'escritos publicados'}`;
 
-    stories.forEach((story, idx) => {
+    activeStories.forEach((story, idx) => {
       const dateString = idx === 0 ? "24 MAY 2026" : idx === 1 ? "18 MAY 2026" : "12 MAY 2026";
       const row = document.createElement("div");
       row.className = "text-row";
@@ -247,6 +256,10 @@ document.addEventListener("DOMContentLoaded", () => {
             <button class="text-row-action" data-id="${story.id}">
               Leer escrito <i data-lucide="arrow-right" style="width: 14px; height: 14px; stroke-width: 2;"></i>
             </button>
+            <span>&bull;</span>
+            <button class="text-row-delete-btn" data-id="${story.id}" title="Eliminar escrito">
+              <i data-lucide="trash-2" style="width: 14px; height: 14px; stroke-width: 2;"></i>
+            </button>
           </div>
         </div>
       `;
@@ -257,6 +270,10 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       row.querySelector(".text-row-action").addEventListener("click", () => {
         openReader(story);
+      });
+      row.querySelector(".text-row-delete-btn").addEventListener("click", (e) => {
+        e.stopPropagation();
+        triggerDelete(story);
       });
 
       container.appendChild(row);
@@ -818,7 +835,183 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
 
-  // --- 10. APP STARTUP EXECUTION ---
+  // --- 10. RECYCLE BIN LOGIC & UI HANDLERS ---
+  
+  // Custom Confirm Modal State
+  let confirmAction = null;
+  const confirmModal = document.getElementById("confirm-modal");
+  const confirmTitle = document.getElementById("confirm-modal-title");
+  const confirmMsg = document.getElementById("confirm-modal-message");
+  const confirmBtnConfirm = document.getElementById("confirm-modal-confirm");
+  const confirmBtnCancel = document.getElementById("confirm-modal-cancel");
+
+  const showConfirmModal = (title, message, onConfirm) => {
+    confirmTitle.textContent = title;
+    confirmMsg.textContent = message;
+    confirmAction = onConfirm;
+    confirmModal.classList.add("active");
+  };
+
+  const hideConfirmModal = () => {
+    confirmModal.classList.remove("active");
+    confirmAction = null;
+  };
+
+  confirmBtnCancel.addEventListener("click", hideConfirmModal);
+  confirmBtnConfirm.addEventListener("click", () => {
+    if (confirmAction) confirmAction();
+    hideConfirmModal();
+  });
+
+  // API delete trigger calls
+  const callDeleteAPI = async (storyId, action) => {
+    const overlay = document.getElementById("upload-loading-overlay");
+    const loadingMsg = document.getElementById("upload-loading-msg");
+    
+    if (action === 'delete') {
+      loadingMsg.textContent = "Moviendo relato a la papelera...";
+    } else if (action === 'restore') {
+      loadingMsg.textContent = "Restaurando relato...";
+    } else {
+      loadingMsg.textContent = "Eliminando permanentemente...";
+    }
+    
+    overlay.classList.add("active");
+
+    try {
+      const response = await fetch('/api/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ storyId, action })
+      });
+
+      if (!response.ok) {
+        const errJson = await response.json().catch(() => ({}));
+        throw new Error(errJson.error || `Fallo en el servidor: ${response.status}`);
+      }
+
+      await fetchStories();
+      
+      if (action === 'delete') {
+        showToast("Relato enviado a la papelera");
+      } else if (action === 'restore') {
+        showToast("Relato restaurado con éxito");
+      } else {
+        showToast("Relato eliminado definitivamente");
+      }
+    } catch (err) {
+      console.error(err);
+      showToast(`Error: ${err.message}`);
+    } finally {
+      overlay.classList.remove("active");
+    }
+  };
+
+  const triggerDelete = (story) => {
+    showConfirmModal(
+      "¿Mover a la papelera?",
+      `El relato "${story.title}" se ocultará del catálogo y se guardará en la papelera por 15 días antes de borrarse definitivamente.`,
+      () => {
+        callDeleteAPI(story.id, "delete");
+      }
+    );
+  };
+
+  const triggerRestore = (story) => {
+    callDeleteAPI(story.id, "restore");
+  };
+
+  const triggerPermanentPurge = (story) => {
+    showConfirmModal(
+      "¿Eliminar permanentemente?",
+      `¿Estás seguro de eliminar "${story.title}"? Esta acción es irreversible y borrará el archivo físico de audio de los servidores.`,
+      () => {
+        callDeleteAPI(story.id, "permanent");
+      }
+    );
+  };
+
+  // Render Recycle Bin list inside Admin Panel
+  const renderRecycleBin = () => {
+    const container = document.getElementById("trash-list-container");
+    const badgeCount = document.getElementById("trash-badge-count");
+    
+    const deletedStories = stories.filter(s => s.deleted);
+    badgeCount.textContent = deletedStories.length;
+    container.innerHTML = "";
+
+    if (deletedStories.length === 0) {
+      container.innerHTML = `<div class="trash-empty-state">La papelera está vacía.</div>`;
+      return;
+    }
+
+    deletedStories.forEach(story => {
+      const now = new Date();
+      const deletedDate = new Date(story.deletedAt);
+      const diffTime = now - deletedDate;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      const daysRemaining = Math.max(0, 15 - diffDays);
+
+      const row = document.createElement("div");
+      row.className = "trash-item-row";
+      row.innerHTML = `
+        <img src="${story.cover}" alt="${story.title}" class="trash-item-cover">
+        <div class="trash-item-info">
+          <h4>${story.title}</h4>
+          <p>Narrador: ${story.narrator} &bull; Categoría: ${story.genre}</p>
+        </div>
+        <div class="trash-item-days ${daysRemaining <= 3 ? '' : 'safe'}">
+          <i data-lucide="clock" style="width: 14px; height: 14px; display: inline; vertical-align: middle; margin-right: 4px;"></i>
+          ${daysRemaining} días restantes
+        </div>
+        <div class="trash-item-actions">
+          <button class="trash-btn trash-btn-restore" data-id="${story.id}">
+            <i data-lucide="rotate-ccw" style="width: 14px; height: 14px;"></i> Restaurar
+          </button>
+          <button class="trash-btn trash-btn-purge" data-id="${story.id}">
+            <i data-lucide="trash" style="width: 14px; height: 14px;"></i> Purgar
+          </button>
+        </div>
+      `;
+
+      row.querySelector(".trash-btn-restore").addEventListener("click", () => {
+        triggerRestore(story);
+      });
+      row.querySelector(".trash-btn-purge").addEventListener("click", () => {
+        triggerPermanentPurge(story);
+      });
+
+      container.appendChild(row);
+    });
+
+    lucide.createIcons();
+  };
+
+  // Admin sub-tabs toggle handlers
+  const tabBtnUpload = document.getElementById("tab-btn-upload");
+  const tabBtnTrash = document.getElementById("tab-btn-trash");
+  const panelUpload = document.getElementById("panel-upload");
+  const panelTrash = document.getElementById("panel-trash");
+
+  tabBtnUpload.addEventListener("click", () => {
+    tabBtnUpload.classList.add("active");
+    tabBtnTrash.classList.remove("active");
+    panelUpload.classList.add("active");
+    panelTrash.classList.remove("active");
+  });
+
+  tabBtnTrash.addEventListener("click", () => {
+    tabBtnTrash.classList.add("active");
+    tabBtnUpload.classList.remove("active");
+    panelTrash.classList.add("active");
+    panelUpload.classList.remove("active");
+    renderRecycleBin();
+  });
+
+
+  // --- 11. APP STARTUP EXECUTION ---
   const fetchStories = async () => {
     try {
       const response = await fetch('/api/stories');
@@ -832,8 +1025,17 @@ document.addEventListener("DOMContentLoaded", () => {
       console.warn("Failed to contact stories API, using local fallback data.js:", err);
       stories = [...window.initialStories];
     }
+    
+    // Render all active sections
     renderStories();
     renderTexts();
+    
+    // Update trash badge count and list
+    const deletedCount = stories.filter(s => s.deleted).length;
+    document.getElementById("trash-badge-count").textContent = deletedCount;
+    if (panelTrash.classList.contains("active")) {
+      renderRecycleBin();
+    }
   };
 
   fetchStories();
